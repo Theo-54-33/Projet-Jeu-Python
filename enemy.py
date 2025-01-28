@@ -1,26 +1,32 @@
-# enemy.py
 class Enemy:
-    def __init__(self, name, hp, mp, attack, defense):
+    def __init__(self, name, hp, attack, defense):
         self.name = name
         self.hp = hp
-        self.max_hp = hp
-        self.mp = mp
-        self.max_mp = mp
         self.attack = attack
         self.defense = defense
 
-    def take_damage(self, damage):
-        """L'ennemi prend des dégâts."""
-        self.hp -= max(0, damage - self.defense)
-        if self.hp <= 0:
-            self.die()
-
-    def die(self):
-        """L'ennemi meurt."""
-        print(f"{self.name} est vaincu!")
-
     def attack_player(self, player):
-        """L'ennemi attaque le joueur."""
-        print(f"{self.name} attaque {player.name}!")
-        damage = self.attack
+        """Effectue une attaque sur le joueur."""
+        damage = max(self.attack - player.defense, 0)
         player.take_damage(damage)
+        return damage
+
+    def take_damage(self, damage):
+        """Applique des dégâts à l'ennemi."""
+        self.hp -= damage
+
+    def is_alive(self):
+        """Vérifie si l'ennemi est encore en vie."""
+        return self.hp > 0
+
+class Boss(Enemy):
+    def __init__(self, name, hp, attack, defense):
+        super().__init__(name, hp, attack, defense)
+        # Vous pouvez ajouter des caractéristiques spécifiques au boss ici
+        self.is_boss = True  # Indiquer que c'est un boss
+
+class FinalBoss(Boss):
+    def __init__(self, name, hp, attack, defense):
+        super().__init__(name, hp, attack, defense)
+        # Vous pouvez ajouter des caractéristiques spécifiques au boss final ici
+        self.is_final_boss = True  # Indiquer que c'est un boss final
