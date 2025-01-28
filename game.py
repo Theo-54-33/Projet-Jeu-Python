@@ -1,29 +1,24 @@
-# game.py
+import pygame
+import sys
 from player import Player
 from enemy import Enemy
-from spells import FireExtraSpell, FireMegaSpell, IceExtraSpell, HealExtraSpell
 from battle import Battle
 
 def main():
+    """Point d'entrée du jeu."""
+    pygame.init()  # Initialisation de Pygame
+    screen = pygame.display.set_mode((800, 600))  # Création de la fenêtre
+    pygame.display.set_caption("Combat Game")  # Titre de la fenêtre
+
     # Créer un joueur
-    player = Player("Héros", 1000, 200, 150, 50)
+    player = Player(name="Noctis", hp=200, attack=30, defense=10, mana=100)
 
-    # Le joueur apprend des sorts
-    fire_spell = FireExtraSpell()
-    player.learn_spell(fire_spell)
+    # Démarrer le combat
+    battle = Battle(screen, player)  # Passer uniquement screen et player
+    battle.start()
 
-    ice_spell = IceExtraSpell()
-    player.learn_spell(ice_spell)
-
-    heal_spell = HealExtraSpell()
-    player.learn_spell(heal_spell)
-
-    # Créer un ennemi
-    enemy = Enemy("Dragon", 500, 100, 50, 30)
-
-    # Lancer un combat
-    battle = Battle(player, enemy)
-    battle.start_battle()
+    pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
     main()
